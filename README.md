@@ -14,6 +14,15 @@ Installation
 npm install
 ```
 
+Running the application
+-----------------------
+
+Run the command:
+```bash
+npm start
+```
+
+This will start an express server on port 9000
 
 Licence
 -------
