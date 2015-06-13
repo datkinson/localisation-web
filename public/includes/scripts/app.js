@@ -1,3 +1,7 @@
+// connect to the socket server
+var socket = io.connect(); 
+
+// initialise angular application
 var application = angular.module('application', ['ngRoute']);
 
 application.config(function($routeProvider) {

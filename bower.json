@@ -15,8 +15,9 @@
     "fontawesome": "*",
     "angular": "~1.4.0",
     "angular-route": "~1.4.0",
-    "less": "~2.5.1",
-    "bootswatch": "~3.3.4+1",
-    "jquery": "~2.1.4"
+    "less": "*",
+    "bootswatch": "*",
+    "jquery": "*",
+    "socket.io-client": "~1.3.5"
   }
 }
