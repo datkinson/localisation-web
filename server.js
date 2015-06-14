@@ -25,6 +25,7 @@ io.sockets.on('connection', function (socket) {
 	clients[socket.id] = {
 		'id': socket.id,
 		'status': 'connected',
+		'mode': 'user',
 		'socket': socket
 	};
 	
@@ -33,14 +34,31 @@ io.sockets.on('connection', function (socket) {
 		clients[socket.id].status = 'disconnected';
 		delete clients[socket.id];
 	});
+	
+	socket.on('requestMode', function(mode) {
+		console.log('client requested new mode of: '+mode);
+		if(mode !== clients[socket.id].mode) {
+			clients[socket.id].mode = mode;
+			socket.emit('changeMode', mode);
+		}
+	});
+	
+	socket.on('requestRedirect', function(location) {
+		if(clients[socket.id].mode === 'admin') {
+			var key;
+			for (key in clients) {
+				if(clients[key].mode !== 'admin') {
+					redirectClient(location, clients[key]);
+				}
+			}
+		}
+	});
 
     socket.emit('info', { msg: 'The world is round, there is no up or down.' });
-	redirectClient('contact', socket);
+//	redirectClient('contact', socket);
 });
 
-
-
 // helper functions
-function redirectClient(location, socket) {
-	socket.emit('location', location);
+function redirectClient(location, client) {
+	client.socket.emit('location', location);
 };
