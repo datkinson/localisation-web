@@ -3,3 +3,20 @@
     <h1>This is the admin page</h1>
     <p>{{ message }}</p>
 </div>
+<div class="row">
+    <div class="col-sm-6">
+        <h3>Mode</h3>
+        <form novalidate>
+            <input type="button" ng-if="!user.isAdmin" ng-click="changeMode('admin')" value="Enable Admin" />
+            <input type="button" ng-if="user.isAdmin" ng-click="changeMode('user')" value="Disable Admin" />
+        </form>        
+    </div>
+    <div class="col-sm-6">
+        <h3>Redirects</h3>
+        <form novalidate>
+            <input type="button" ng-click="requestRedirect('home')" value="Home" />
+            <input type="button" ng-click="requestRedirect('about')" value="About" />
+            <input type="button" ng-click="requestRedirect('contact')" value="Contact" />
+        </form>
+    </div>
+</div>
