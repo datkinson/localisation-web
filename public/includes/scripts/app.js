@@ -1,5 +1,5 @@
 // connect to the socket server
-var socket = io.connect(); 
+var socket = io.connect('', {query: 'fingerprint='+window.fingerprint.md5hash}); 
 
 // initialise angular application
 var application = angular.module('application', ['ngRoute']);

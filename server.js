@@ -2,6 +2,9 @@
 var express = require('express');
 var app = express();
 
+var database = require('./database/database');
+
+// create in-memory array of connected clients
 var clients = [];
 
 // configuration
@@ -26,8 +29,16 @@ io.sockets.on('connection', function (socket) {
 		'id': socket.id,
 		'status': 'connected',
 		'mode': 'user',
+		'fingerprint': socket.handshake.query.fingerprint,
 		'socket': socket
 	};
+	database.Client.create({
+		name: 'Client',
+		mode: 'user',
+		socket: socket.id,
+		fingerprint: socket.handshake.query.fingerprint
+	});
+	console.log(clients[socket.id]);
 	
 	socket.on('disconnect', function () {
 		console.log('A user disconnected');
