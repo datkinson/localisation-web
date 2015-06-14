@@ -20,5 +20,10 @@ application.config(function($routeProvider) {
 		.when('/contact', {
 			templateUrl: 'includes/pages/contact.html',
 			controller: 'contactController'
+		})
+		// admin page
+		.when('/admin', {
+			templateUrl: 'includes/pages/admin.html',
+			controller: 'adminController'
 		});
 });
