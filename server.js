@@ -42,7 +42,7 @@ io.sockets.on('connection', function (socket) {
 			socket.emit('changeMode', mode);
 		}
 	});
-	
+	// admin client requests user redirect
 	socket.on('requestRedirect', function(location) {
 		if(clients[socket.id].mode === 'admin') {
 			var key;
@@ -52,6 +52,11 @@ io.sockets.on('connection', function (socket) {
 				}
 			}
 		}
+	});
+	
+	// user client submits a comment
+	socket.on('submitComment', function(comment) {
+		// todo - store user submitted comment
 	});
 
     socket.emit('info', { msg: 'The world is round, there is no up or down.' });
