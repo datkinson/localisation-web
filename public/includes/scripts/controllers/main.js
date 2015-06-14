@@ -1,8 +1,13 @@
-application.controller('mainController', function($scope, $location, general) {
+application.controller('mainController', function($scope, $rootScope, $location, general, user) {
 	$scope.general = general;
+	$scope.user = user;
 	
 	// on recieving location message redirect client to the recieved route
 	socket.on('location', function (data) {
-		$location.path( "/" + data );
+		if(!$scope.user.isAdmin) {
+			$rootScope.$apply(function() {
+				$location.path("/" + data);
+			});
+		}
 	});
 });
