@@ -17,9 +17,9 @@ application.config(function($routeProvider) {
 			controller: 'aboutController'
 		})
 		// contact page
-		.when('/contact', {
-			templateUrl: 'includes/pages/contact.html',
-			controller: 'contactController'
+		.when('/comment', {
+			templateUrl: 'includes/pages/comment.html',
+			controller: 'commentController'
 		})
 		// admin page
 		.when('/admin', {
