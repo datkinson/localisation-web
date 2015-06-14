@@ -7,8 +7,8 @@
     <div class="col-sm-6">
         <h3>Mode</h3>
         <form novalidate>
-            <input type="button" ng-if="!user.isAdmin" ng-click="changeMode('admin')" value="Enable Admin" />
-            <input type="button" ng-if="user.isAdmin" ng-click="changeMode('user')" value="Disable Admin" />
+            <input type="button" ng-show="!user.isAdmin" ng-click="changeMode('admin')" value="Enable Admin" />
+            <input type="button" ng-show="user.isAdmin" ng-click="changeMode('user')" value="Disable Admin" />
         </form>        
     </div>
     <div class="col-sm-6">
@@ -16,7 +16,7 @@
         <form novalidate>
             <input type="button" ng-click="requestRedirect('home')" value="Home" />
             <input type="button" ng-click="requestRedirect('about')" value="About" />
-            <input type="button" ng-click="requestRedirect('contact')" value="Contact" />
+            <input type="button" ng-click="requestRedirect('comment')" value="Comment" />
         </form>
     </div>
 </div>
