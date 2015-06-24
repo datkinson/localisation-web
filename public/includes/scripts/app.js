@@ -11,6 +11,10 @@ application.config(function($routeProvider) {
 			templateUrl: 'includes/pages/home.html',
 			controller: 'homeController'
 		})
+		.when('/home', {
+			templateUrl: 'includes/pages/home.html',
+			controller: 'homeController'
+		})
 		// about page
 		.when('/about', {
 			templateUrl: 'includes/pages/about.html',

@@ -67,7 +67,11 @@ io.sockets.on('connection', function (socket) {
 	
 	// user client submits a comment
 	socket.on('submitComment', function(comment) {
-		// todo - store user submitted comment
+                database.Comment.create({
+                        name: comment.name,
+                        text: comment.text,
+                        socket: socket.id
+                });
 	});
 
     socket.emit('info', { msg: 'The world is round, there is no up or down.' });
