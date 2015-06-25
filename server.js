@@ -32,13 +32,35 @@ io.sockets.on('connection', function (socket) {
 		'fingerprint': socket.handshake.query.fingerprint,
 		'socket': socket
 	};
-	database.Client.create({
-		name: 'Client',
-		mode: 'user',
-		socket: socket.id,
-		fingerprint: socket.handshake.query.fingerprint
-	});
-	console.log(clients[socket.id]);
+    
+    // check if connected clients fingerprint exists in database
+    database.Client.findAll({
+      where: {
+        fingerprint: socket.handshake.query.fingerprint
+      }
+    }).then(function(result) {
+        
+        // if fingerprint does not exist, add it to the database
+        if(result.length === 0) {
+            database.Client.create({
+                name: 'Client',
+                mode: 'user',
+                socket: socket.id,
+                fingerprint: socket.handshake.query.fingerprint
+            });
+        } else {
+            
+            // fingerprint exists, now update the socket object
+            console.log('updating user');
+            database.Client.update({
+              socket: socket.id,
+            }, {
+              where: {
+                fingerprint: socket.handshake.query.fingerprint
+              }
+            });
+        }
+    });
 	
 	socket.on('disconnect', function () {
 		console.log('A user disconnected');
