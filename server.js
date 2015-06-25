@@ -32,13 +32,41 @@ io.sockets.on('connection', function (socket) {
 		'fingerprint': socket.handshake.query.fingerprint,
 		'socket': socket
 	};
-	database.Client.create({
-		name: 'Client',
-		mode: 'user',
-		socket: socket.id,
-		fingerprint: socket.handshake.query.fingerprint
-	});
-	console.log(clients[socket.id]);
+    
+    // check if connected clients fingerprint exists in database
+    database.Client.findAll({
+      where: {
+        fingerprint: socket.handshake.query.fingerprint
+      }
+    }).then(function(result) {
+        
+        // if fingerprint does not exist, add it to the database
+        if(result.length === 0) {
+            database.Client.create({
+                name: 'Client',
+                mode: 'user',
+                socket: socket.id,
+                fingerprint: socket.handshake.query.fingerprint
+            });
+        } else {
+            
+            // fingerprint exists, now update the socket object
+            console.log('updating user');
+            database.Client.update(
+				{
+              		socket: socket.id,
+            	}, {
+              		where: {
+                		fingerprint: socket.handshake.query.fingerprint
+              		}
+            	}
+			).then(function(after){
+				console.log('updating mode of connection: ', result[0].dataValues.socket);
+				// ensure the connected user has the correct mode set
+				socket.emit('changeMode', result[0].dataValues.mode);
+			});
+        }
+    });
 	
 	socket.on('disconnect', function () {
 		console.log('A user disconnected');
@@ -50,6 +78,15 @@ io.sockets.on('connection', function (socket) {
 		console.log('client requested new mode of: '+mode);
 		if(mode !== clients[socket.id].mode) {
 			clients[socket.id].mode = mode;
+			database.Client.update(
+				{
+              		mode: clients[socket.id].mode,
+            	}, {
+              		where: {
+                		socket: socket.id
+              		}
+            	}
+			);
 			socket.emit('changeMode', mode);
 		}
 	});
