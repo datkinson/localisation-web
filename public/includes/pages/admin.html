@@ -16,3 +16,25 @@
         </form>
     </div>
 </div>
+<div class="row">
+    <div class="col-sm-6">
+        <table class="table">
+            <caption>Comments</caption>
+            <thead>
+                <tr>
+                <th>#</th>
+                <th>Name</th>
+                <th>Comment</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="comment in comments">
+                <th scope="row">{{ comment.id }}</th>
+                <td>{{ comment.name }}</td>
+                <td>{{ comment.text }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    
+</div>
