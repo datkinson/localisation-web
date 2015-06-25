@@ -71,7 +71,26 @@ io.sockets.on('connection', function (socket) {
                         name: comment.name,
                         text: comment.text,
                         socket: socket.id
-                });
+                }).then(function() {
+					distributeComments();
+				});
+	});
+	
+	// client request comment
+	socket.on('getComment', function(query) {
+		if(query === 'all') {
+			database.Comment.findAll().then(function(results) {
+		var allComments = [];
+		results.forEach(function(item) {
+			allComments.push({
+				id: item.dataValues.id,
+				name: item.dataValues.name,
+				text: item.dataValues.text
+			});
+		});
+		socket.emit('allComments', allComments);
+	});
+		}
 	});
 
     socket.emit('info', { msg: 'The world is round, there is no up or down.' });
@@ -81,4 +100,21 @@ io.sockets.on('connection', function (socket) {
 // helper functions
 function redirectClient(location, client) {
 	client.socket.emit('location', location);
+};
+
+function distributeComments() {
+	database.Comment.findAll().then(function(results) {
+		var allComments = [];
+		results.forEach(function(item) {
+			allComments.push({
+				id: item.dataValues.id,
+				name: item.dataValues.name,
+				text: item.dataValues.text
+			});
+		});
+		var key;
+		for (key in clients) {
+			clients[key].socket.emit('allComments', allComments);
+		}
+	});
 };
