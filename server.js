@@ -52,13 +52,19 @@ io.sockets.on('connection', function (socket) {
             
             // fingerprint exists, now update the socket object
             console.log('updating user');
-            database.Client.update({
-              socket: socket.id,
-            }, {
-              where: {
-                fingerprint: socket.handshake.query.fingerprint
-              }
-            });
+            database.Client.update(
+				{
+              		socket: socket.id,
+            	}, {
+              		where: {
+                		fingerprint: socket.handshake.query.fingerprint
+              		}
+            	}
+			).then(function(after){
+				console.log('updating mode of connection: ', result[0].dataValues.socket);
+				// ensure the connected user has the correct mode set
+				socket.emit('changeMode', result[0].dataValues.mode);
+			});
         }
     });
 	
