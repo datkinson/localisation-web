@@ -78,6 +78,15 @@ io.sockets.on('connection', function (socket) {
 		console.log('client requested new mode of: '+mode);
 		if(mode !== clients[socket.id].mode) {
 			clients[socket.id].mode = mode;
+			database.Client.update(
+				{
+              		mode: clients[socket.id].mode,
+            	}, {
+              		where: {
+                		socket: socket.id
+              		}
+            	}
+			);
 			socket.emit('changeMode', mode);
 		}
 	});
