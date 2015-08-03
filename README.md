@@ -1,4 +1,4 @@
-Generic Application
+Localisation Management
 ===================
 
 Uses:
@@ -22,7 +22,7 @@ Run the command:
 npm start
 ```
 
-This will start an express server on port 9000
+This will start an express server on port 9009
 
 Licence
 -------
