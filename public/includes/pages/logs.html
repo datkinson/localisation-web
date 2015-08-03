@@ -1,0 +1,29 @@
+<!-- logs.html -->
+<div class="row">
+    <div class="col-sm-6">
+        <table class="table">
+            <caption>Logs</caption>
+            <thead>
+                <tr>
+                <th>#</th>
+                <th>Mac</th>
+                <th>Name</th>
+                <th>Client</th>
+                <th>Signal</th>
+                <th>date_created</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="log in logs">
+                <th scope="row">{{ log.id }}</th>
+                <td>{{ log.mac }}</td>
+                <td>{{ log.name }}</td>
+                <td>{{ log.client }}</td>
+                <td>{{ log.signal }}</td>
+                <td>{{ log.date_created }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    
+</div>

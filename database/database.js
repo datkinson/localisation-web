@@ -14,6 +14,26 @@ var sequelize = new Sequelize('database', 'username', 'password', {
 });
 
 // initialise database model
+var Log = sequelize.define('log', {
+  mac: {
+    type: Sequelize.STRING
+  },
+  name: {
+    type: Sequelize.STRING
+  },
+  client: {
+    type: Sequelize.STRING
+  },
+  signal: {
+    type: Sequelize.STRING
+  },
+  date_created: {
+    type: Sequelize.DATE,
+    defaultValue: Sequelize.NOW
+  }
+}, {
+  freezeTableName: true
+});
 var Client = sequelize.define('client', {
 	name: {
 		type: Sequelize.STRING
@@ -31,23 +51,11 @@ var Client = sequelize.define('client', {
 	freezeTableName: true // Model tableName will be the same as the model name
 });
 
-var Comment = sequelize.define('comment', {
-	name: {
-		type: Sequelize.STRING
-	},
-	text: {
-		type: Sequelize.STRING
-	},
-	socket: {
-		type: Sequelize.STRING
-	}
-});
-
 // create data structures
 Client.sync();
-Comment.sync();
+Log.sync();
 
 module.exports = {
 	Client: Client,
-	Comment: Comment
+  Log: Log
 };

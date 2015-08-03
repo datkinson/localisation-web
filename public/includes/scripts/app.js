@@ -25,6 +25,11 @@ application.config(function($routeProvider) {
 			templateUrl: 'includes/pages/comment.html',
 			controller: 'commentController'
 		})
+		// contact page
+		.when('/logs', {
+			templateUrl: 'includes/pages/logs.html',
+			controller: 'logsController'
+		})
 		// admin page
 		.when('/admin', {
 			templateUrl: 'includes/pages/admin.html',

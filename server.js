@@ -16,8 +16,8 @@ app.get('*', function(req, res) {
 });
 
 // start
-var server = app.listen(9000);
-console.log('App listening on port 9000');
+var server = app.listen(9009);
+console.log('App listening on port 9009');
 var io = require('socket.io').listen(server);
 console.log('socket.io attached to app http server');
 
@@ -129,12 +129,72 @@ io.sockets.on('connection', function (socket) {
 	});
 		}
 	});
+	
+	// user client submits a log
+	socket.on('submitLog', function(log) {
+		console.log(log);
+                database.Log.create({
+                        mac: log.mac,
+                        name: log.name,
+                        client: log.client,
+                        signal: log.signal,
+                        socket: socket.id
+                }).then(function() {
+					distributeLogs();
+				});
+	});
+	
+	// client request logs
+	socket.on('getLogs', function(query) {
+		if(query === 'all') {
+			database.Log.findAll({limit: 10, order: 'date_created DESC'}).then(function(results) {
+		var allLogs = [];
+		results.forEach(function(item) {
+			allLogs.push({
+				id: item.dataValues.id,
+				name: item.dataValues.name,
+				mac: item.dataValues.mac,
+				client: item.dataValues.client,
+				signal: item.dataValues.signal,
+				date_created: item.dataValues.date_created
+			});
+		});
+		socket.emit('allLogs', allLogs);
+	});
+		}
+	});
 
     socket.emit('info', { msg: 'The world is round, there is no up or down.' });
 //	redirectClient('contact', socket);
 });
 
 // helper functions
+
+function distributeLogs() {
+	logsToSend = [];
+	database.Log.findAll(
+		{
+			limit: 15,
+			order: 'date_created DESC'
+		}
+	).then(function(results){
+		results.forEach(function(item) {
+			logsToSend.push(
+				{
+					id: item.dataValues.id,
+					name: item.dataValues.name,
+					mac: item.dataValues.mac,
+					client: item.dataValues.client,
+					signal: item.dataValues.signal,
+					date_created: item.dataValues.date_created
+				}
+			);
+		});
+	io.sockets.emit('allLogs', logsToSend);
+	});
+};
+
+
 function redirectClient(location, client) {
 	client.socket.emit('location', location);
 };
